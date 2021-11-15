@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <style>
+        .result {
+            background-color: green;
+            color: #fff;
+            padding: 20px;
+        }
+    
+        .row {
+            display: flex;
+        }
+    </style>
+    
+</head>
+<body>
+    <div class="row">
+        <div class="col">
+            <div style="width:500px;" id="reader"></div>
+        </div>
+        <div class="col" style="padding:30px;">
+            <h4>SCAN RESULT</h4>
+            <div id="result" name="QRCodeText">Result Here</div>
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.QRCodeImagePath, new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @if (Model != null && !String.IsNullOrEmpty(Model.QRCodeImagePath))
+            {
+                <img src="@Url.Content(Model.QRCodeImagePath)" alt="Image" />
+            }
+
+        </div>
+    </div>
+</body>
+<script src="./main.js"></script>
+<script type="text/javascript">
+    function onScanSuccess(qrCodeMessage) {
+        document.getElementById('result').innerHTML = qrCodeMessage;
+    }
+    function onScanError(errorMessage) {
+        //handle scan error
+    }
+    var html5QrcodeScanner = new Html5QrcodeScanner(
+        "reader", { fps: 10, qrbox: 250 });
+    html5QrcodeScanner.render(onScanSuccess, onScanError);
+</script>
+</html>
